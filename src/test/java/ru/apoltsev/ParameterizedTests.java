@@ -4,17 +4,13 @@ import com.codeborne.selenide.CollectionCondition;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 import ru.apoltsev.data.Elements;
-
 import java.util.List;
 import java.util.stream.Stream;
-
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
-
 public class ParameterizedTests {
-
     @ValueSource(strings = {"Пушкин А.С", "Толстой Л.Н"})
     @ParameterizedTest(name = "Проверка числа результатов поиска в Читай-городе для запроса {0}")
     void chitaiGorodxSearchTests(String testData) {
@@ -24,7 +20,6 @@ public class ParameterizedTests {
                 .shouldHave(CollectionCondition.size(24))
                 .first()
                 .shouldHave(text(testData));
-
     }
 
     @CsvSource(value = {
@@ -39,7 +34,6 @@ public class ParameterizedTests {
                 .shouldHave(CollectionCondition.size(24))
                 .first()
                 .shouldHave(text(expectedText));
-
     }
 
     static Stream<Arguments> chitaiGorodxSearchDifferentAnotherTestsProvider() {
@@ -50,13 +44,12 @@ public class ParameterizedTests {
                         , "Мелочи сувенирные", "Сувенирные канцелярские и офисные принадлежности", "Поздравительная атрибутика", "Календари"))
         );
     }
-
     @MethodSource("chitaiGorodxSearchDifferentAnotherTestsProvider")
     @ParameterizedTest(name = "Проверка отображения названия кнопок для раздела {0}")
     void chitaiGorodxSearchDifferentAnotherTests(Elements elements, List<String> nameItem) {
         open("https://www.chitai-gorod.ru");
         $$(".nav__item").find(text(String.valueOf(elements))).click();
-        $$(".slider__link").filter(visible)
-                .shouldHave(CollectionCondition.texts(nameItem));
+        $$(".slider__link")
+                .containsAll(nameItem);
     }
 }
