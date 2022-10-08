@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ParameterizedTests {
     @ValueSource(strings = {"Пушкин А.С", "Толстой Л.Н"})
@@ -38,9 +39,9 @@ public class ParameterizedTests {
 
     static Stream<Arguments> chitaiGorodxSearchDifferentAnotherTestsProvider() {
         return Stream.of(
-                Arguments.of(Elements.Книги, List.of("Новинки литературы", "Лучшие из лучших"
+                Arguments.of(Elements.КНИГИ, List.of("Новинки литературы", "Лучшие из лучших"
                         , "10 книг, которые помогут справиться со стрессом", "Скоро в продаже", "Развлечение и антистресс")),
-                Arguments.of(Elements.Сувениры, List.of("Сувениры к празднику", "Дом, Быт, Декор", "Игры и Игрушки", "Личные вещи"
+                Arguments.of(Elements.СУВЕНИРЫ, List.of("Сувениры к празднику", "Дом, Быт, Декор", "Игры и Игрушки", "Личные вещи"
                         , "Мелочи сувенирные", "Сувенирные канцелярские и офисные принадлежности", "Поздравительная атрибутика", "Календари"))
         );
     }
@@ -49,7 +50,6 @@ public class ParameterizedTests {
     void chitaiGorodxSearchDifferentAnotherTests(Elements elements, List<String> nameItem) {
         open("https://www.chitai-gorod.ru");
         $$(".nav__item").find(text(String.valueOf(elements))).click();
-        $$(".slider__link")
-                .containsAll(nameItem);
+        assertTrue($$(".slider__link").filter(visible).texts().containsAll(nameItem));
     }
 }
