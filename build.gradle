@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group 'ru.apoltsev'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation(
+            'org.junit.jupiter:junit-jupiter:5.9.1',
+            'com.codeborne:selenide:6.8.1'
+    )
+    compileTestJava {
+        options.encoding = 'UTF-8'
+    }
+
+}
+
+test {
+    useJUnitPlatform()
+}
