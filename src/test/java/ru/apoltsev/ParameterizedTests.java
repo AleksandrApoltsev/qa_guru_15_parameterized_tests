@@ -1,6 +1,7 @@
 package ru.apoltsev;
 
 import com.codeborne.selenide.CollectionCondition;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 import ru.apoltsev.data.Elements;
@@ -9,7 +10,6 @@ import java.util.stream.Stream;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ParameterizedTests {
     @ValueSource(strings = {"Пушкин А.С", "Толстой Л.Н"})
@@ -36,20 +36,20 @@ public class ParameterizedTests {
                 .first()
                 .shouldHave(text(expectedText));
     }
-
     static Stream<Arguments> chitaiGorodxSearchDifferentAnotherTestsProvider() {
         return Stream.of(
-                Arguments.of(Elements.КНИГИ, List.of("Новинки литературы", "Лучшие из лучших"
+                Arguments.of(Elements.BOOKS.getElements(), List.of("Новинки литературы", "Лучшие из лучших"
                         , "10 книг, которые помогут справиться со стрессом", "Скоро в продаже", "Развлечение и антистресс")),
-                Arguments.of(Elements.СУВЕНИРЫ, List.of("Сувениры к празднику", "Дом, Быт, Декор", "Игры и Игрушки", "Личные вещи"
+                Arguments.of(Elements.SOUVENIRS.getElements(), List.of("Сувениры к празднику", "Дом, Быт, Декор", "Игры и Игрушки", "Личные вещи"
                         , "Мелочи сувенирные", "Сувенирные канцелярские и офисные принадлежности", "Поздравительная атрибутика", "Календари"))
         );
     }
     @MethodSource("chitaiGorodxSearchDifferentAnotherTestsProvider")
     @ParameterizedTest(name = "Проверка отображения названия кнопок для раздела {0}")
-    void chitaiGorodxSearchDifferentAnotherTests(Elements elements, List<String> nameItem) {
+    void chitaiGorodxSearchDifferentAnotherTests(String elements, List<String> nameItem) {
         open("https://www.chitai-gorod.ru");
         $$(".nav__item").find(text(String.valueOf(elements))).click();
-        assertTrue($$(".slider__link").filter(visible).texts().containsAll(nameItem));
+        List<String> texts = $$(".slider__link").filter(visible).texts();
+        Assertions.assertEquals(nameItem, texts);
     }
 }
