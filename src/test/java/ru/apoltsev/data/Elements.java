@@ -5,10 +5,12 @@ public enum Elements {
     SOUVENIRS("СУВЕНИРЫ");
 
     private final String titleElements;
+
     private Elements(final String titleElements1) {
         this.titleElements = titleElements1;
     }
+
     public String getElements() {
         return titleElements;
-          }
+    }
 }

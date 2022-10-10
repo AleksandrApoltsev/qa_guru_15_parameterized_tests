@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 import ru.apoltsev.data.Elements;
+
 import java.util.List;
 import java.util.stream.Stream;
+
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
@@ -36,6 +38,7 @@ public class ParameterizedTests {
                 .first()
                 .shouldHave(text(expectedText));
     }
+
     static Stream<Arguments> chitaiGorodxSearchDifferentAnotherTestsProvider() {
         return Stream.of(
                 Arguments.of(Elements.BOOKS.getElements(), List.of("Новинки литературы", "Лучшие из лучших"
@@ -44,6 +47,7 @@ public class ParameterizedTests {
                         , "Мелочи сувенирные", "Сувенирные канцелярские и офисные принадлежности", "Поздравительная атрибутика", "Календари"))
         );
     }
+
     @MethodSource("chitaiGorodxSearchDifferentAnotherTestsProvider")
     @ParameterizedTest(name = "Проверка отображения названия кнопок для раздела {0}")
     void chitaiGorodxSearchDifferentAnotherTests(String elements, List<String> nameItem) {
