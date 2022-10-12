@@ -41,19 +41,20 @@ public class ParameterizedTests {
 
     static Stream<Arguments> chitaiGorodxSearchDifferentAnotherTestsProvider() {
         return Stream.of(
-                Arguments.of(Elements.BOOKS.getElements(), List.of("Новинки литературы", "Лучшие из лучших"
+                Arguments.of(Elements.BOOKS, List.of("Новинки литературы", "Лучшие из лучших"
                         , "10 книг, которые помогут справиться со стрессом", "Скоро в продаже", "Развлечение и антистресс")),
-                Arguments.of(Elements.SOUVENIRS.getElements(), List.of("Сувениры к празднику", "Дом, Быт, Декор", "Игры и Игрушки", "Личные вещи"
+                Arguments.of(Elements.SOUVENIRS, List.of("Сувениры к празднику", "Дом, Быт, Декор", "Игры и Игрушки", "Личные вещи"
                         , "Мелочи сувенирные", "Сувенирные канцелярские и офисные принадлежности", "Поздравительная атрибутика", "Календари"))
         );
     }
 
     @MethodSource("chitaiGorodxSearchDifferentAnotherTestsProvider")
     @ParameterizedTest(name = "Проверка отображения названия кнопок для раздела {0}")
-    void chitaiGorodxSearchDifferentAnotherTests(String elements, List<String> nameItem) {
+    void chitaiGorodxSearchDifferentAnotherTests(Elements elements, List<String> expectedValues) {
         open("https://www.chitai-gorod.ru");
-        $$(".nav__item").find(text(String.valueOf(elements))).click();
-        List<String> texts = $$(".slider__link").filter(visible).texts();
-        Assertions.assertEquals(nameItem, texts);
+        $$(".nav__item").find(text(String.valueOf(elements.toString()))).click();
+        $$(".slider__link")
+                .filter(visible)
+                .shouldHave(CollectionCondition.texts(expectedValues));
     }
 }

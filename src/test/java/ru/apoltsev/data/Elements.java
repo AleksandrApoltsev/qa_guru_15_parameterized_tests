@@ -4,13 +4,16 @@ public enum Elements {
     BOOKS("КНИГИ"),
     SOUVENIRS("СУВЕНИРЫ");
 
-    private final String titleElements;
+    private final String title;
 
-    private Elements(final String titleElements1) {
-        this.titleElements = titleElements1;
+    Elements(final String title) {
+        this.title = title;
     }
 
-    public String getElements() {
-        return titleElements;
+    @Override
+    public String toString() {
+
+        return title;
     }
 }
+
